@@ -5,19 +5,35 @@
  */
 package inicializacion;
 
+import java.io.FileReader;
+import java.io.IOException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 /**
  *
  * @author mario
  */
 public class Wine {
 
-    private String path = "";
+    private static String path = "src/datos/";
+    private static String file = "wine.json";
     
     public static void main(String[] args) {
-        // TODO code application logic here
+        JSONArray wine = leerDatos(path+file);
+         System.out.println("aqui");
+        System.out.println(wine.toJSONString());
     }
-   
-    private JSONObject leerDatos(String path){
-        
+
+    private static JSONArray leerDatos(String path) {
+        JSONParser parser = new JSONParser();
+        try {
+            return (JSONArray)  parser.parse(new FileReader(path));           
+        } catch (IOException | ParseException e) {
+            System.err.println("Error en la lectura de datos: "+e);
+        }
+        return null;
     }
 }
