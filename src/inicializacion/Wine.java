@@ -11,11 +11,13 @@ package inicializacion;
  */
 public class Wine {
 
-    /**
-     * @param args the command line arguments
-     */
+    private String path = "";
+    
     public static void main(String[] args) {
         // TODO code application logic here
     }
-    
+   
+    private JSONObject leerDatos(String path){
+        
+    }
 }
