@@ -23,38 +23,35 @@ import org.json.simple.parser.ParseException;
  *
  * @author mario
  */
-public class Wine {
+public class Inn {
 
     private static String path = "src/datos/";
-    private static String file = "wine.json";
+    private static String archivo = "inn.json";
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
-        //Leer los datos del documento
-        JSONArray wines = leerDatos(path + file);
-        
+        JSONArray inn = leerDatos(path + archivo);
+
         String contenido = "";
         //Se crea el contenido para la petición _bulk
-        for (int i = 0; i < wines.size(); i++) {
+        for (int i = 0; i < inn.size(); i++) {
             //Se extra el objeto 
-            JSONObject wine = (JSONObject) wines.get(i);
-            contenido += "{ \"index\": {\"_id\":" + wine.get("No") + " }}\n"
+            JSONObject wine = (JSONObject) inn.get(i);
+            contenido += "{ \"index\": {\"_id\":" + wine.get("Code") + " }}\n"
                     + wine.toJSONString() + "\n";
-
         }
-               
+
         //Ruta del indice 
-        String indexUrl = "http://localhost:9200/wines/wine/";
+        String indexUrl = "http://localhost:9200/reservations/reservation/";
 
         //Se crea el indice con el contenido
         creaIndice(indexUrl, contenido);
-        
+
         //Ruta para eliminar el indice completo
-        String deleteUrl = "http://localhost:9200/wines";
-        
+        String deleteUrl = "http://localhost:9200/reservations";
+
         //Eliminar el indice completo
         eliminaIndice(deleteUrl, contenido);
-
     }
 
     private static JSONArray leerDatos(String path) {
@@ -68,7 +65,6 @@ public class Wine {
     }
 
     private static void creaIndice(String indexUrl, String contenido) {
-
         try {
             //Se crea la url para indearlo
             URL url = new URL(indexUrl + "_bulk");
@@ -136,3 +132,4 @@ public class Wine {
         }
     }
 }
+
