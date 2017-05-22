@@ -14,6 +14,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -41,8 +42,8 @@ public class Wine {
             contenido += "{ \"index\": {\"_id\":" + wine.get("No") + " }}\n"
                     + wine.toJSONString() + "\n";
 
-        }
-               
+        }            
+        
         //Ruta del indice 
         String indexUrl = "http://localhost:9200/wines/wine/";
 
@@ -53,7 +54,7 @@ public class Wine {
         String deleteUrl = "http://localhost:9200/wines";
         
         //Eliminar el indice completo
-        eliminaIndice(deleteUrl, contenido);
+        //eliminaIndice(deleteUrl, contenido);
 
     }
 

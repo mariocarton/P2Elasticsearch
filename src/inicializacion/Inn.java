@@ -51,7 +51,7 @@ public class Inn {
         String deleteUrl = "http://localhost:9200/reservations";
 
         //Eliminar el indice completo
-        eliminaIndice(deleteUrl, contenido);
+        //eliminaIndice(deleteUrl, contenido);
     }
 
     private static JSONArray leerDatos(String path) {

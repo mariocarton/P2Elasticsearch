@@ -42,16 +42,16 @@ public class Maraton {
         }
 
         //Ruta del indice 
-        String indexUrl = "http://localhost:9200/maratones/maraton/";
+        String indexUrl = "http://localhost:9200/maraton/participante/";
 
         //Se crea el indice del contenido
         creaIndice(indexUrl, contenido);
 
         //Ruta para eliminar el indice completo
-        String deleteUrl = "http://localhost:9200/maratones";
+        String deleteUrl = "http://localhost:9200/maraton";
 
         //Eliminar el indice completo
-        eliminaIndice(deleteUrl, contenido);
+        //eliminaIndice(deleteUrl, contenido);
         
     }
 

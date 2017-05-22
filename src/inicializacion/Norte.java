@@ -15,6 +15,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.simple.JSONArray;
@@ -33,20 +34,39 @@ public class Norte {
     public static void main(String[] args) {
 
         JSONArray norte = leerDatos(path);
-        System.out.println(norte.size());
 
-        String contenido = "";
-        //Se crea el contenido para la petición _bulk
+        System.out.println("Creando las consultas...");
+        ArrayList<String> a = new ArrayList();
+        
+        //Crea las consultas y las mete en una lista
         for (int i = 0; i < norte.size(); i++) {
             //Se extra el objeto 
             JSONObject n = (JSONObject) norte.get(i);
-            contenido += "{ \"index\": {\"_id\":" + i + " }}\n"
-                    + n.toJSONString() + "\n";
-        }
+            a.add("{ \"index\": {\"_id\":" + i + " }}\n"
+                    + n.toJSONString() + "\n");
 
+        }
+        
+        System.out.println("Creando contenido...");
         //Ruta del indice 
         String indexUrl = "http://localhost:9200/norte/noticia/";
+        //Cada mil elementos concatenados los introduce en el indice
+        String contenido = "";
+        for (int i = 0; i < a.size(); i++) {
+            //Concataena
+            contenido += a.get(i);
+            //Introduce 1000            
+            if (i % 1000 == 0) {
+                
+                System.out.println("Creando indice... Introducido: "+i+" de "+a.size());
+                //Se crea el indice con el contenido
+                creaIndice(indexUrl, contenido);
+                contenido = "";
+            }
 
+        }
+        //Introduce el resto
+        System.out.println("Creando indice... Resto...");
         //Se crea el indice con el contenido
         creaIndice(indexUrl, contenido);
 
@@ -54,11 +74,13 @@ public class Norte {
         String deleteUrl = "http://localhost:9200/norte";
 
         //Eliminar el indice completo
-        eliminaIndice(deleteUrl, contenido);
-
+        //eliminaIndice(deleteUrl, "");
     }
 
     private static JSONArray leerDatos(String path) {
+
+        System.out.println("Leyendo los ficheros...");
+
         File dir = new File(path);
 
         JSONParser parser = new JSONParser();
@@ -118,7 +140,7 @@ public class Norte {
             rd.close();
 
             //Imprime la respuesta
-            System.out.println(response.toString());
+            //System.out.println(response.toString());
 
         } catch (MalformedURLException ex) {
             System.err.println("Error en la URL: " + ex);
@@ -163,4 +185,3 @@ public class Norte {
         }
     }
 }
-
